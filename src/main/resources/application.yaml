@@ -7,6 +7,10 @@ spring:
     username: admin
     password: admin
 
+  jpa:
+    hibernate:
+      ddl-auto: create
+
 server:
   port: 9000
 
