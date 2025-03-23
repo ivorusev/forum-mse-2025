@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: forum
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/forumdb
+    username: admin
+    password: admin
+
+server:
+  port: 9000
+
+
