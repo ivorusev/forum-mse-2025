@@ -32,3 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 postgres_data/
+
+mvnw
+mvnw.cmd
+.mvn/
