@@ -27,6 +27,28 @@ services:
     networks:
       - pgnet
 
+  app:
+    tty: true
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    env_file:
+      - testing.env
+    networks:
+      - pgnet
+
+# ENABLE FOR DEVELOPING IN A CONTAINER
+    image: maven:3.9.9-eclipse-temurin-21-jammy
+    volumes:
+      - ./src:/home/app/src
+      - ./target:/home/app/target
+      - ./pom.xml:/home/app/pom.xml
+    command: tail -f /dev/null # Keep the container running
+
 volumes:
   pgdata:
     driver: local

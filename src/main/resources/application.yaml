@@ -3,9 +3,9 @@ spring:
     name: forum
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/forumdb
-    username: admin
-    password: admin
+    url: jdbc:postgresql://${POSTGRES_ADDRESS}:5432/forumdb
+    username: ${POSTGRES_ADMIN_USERNAME}
+    password: ${POSTGRES_ADMIN_PASSWORD}
 
     hikari:
       schema: forum

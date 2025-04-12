@@ -7,14 +7,26 @@
 
 ## Setup
 
+TO build the application container image:
+```shell
+docker build . -t forum:<version>
+# e.g. ..... . -t forum:1.0.0
+```
+
 To start Postgres and PGAdmin:
 
 ```shell
+# To build the app image
+docker compose build
+# To start the components
 docker compose up -d
 ```
 
 _This will start the Postgres database and expose it on the host machine's
 port `5432`, and the Postgres Admin Panel on port `5050`._
+
+**Note:** If building a docker image (via docker build) you must specify
+the version in the docker compose
 
 Install dependencies:
 
