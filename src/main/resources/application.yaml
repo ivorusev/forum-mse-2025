@@ -11,17 +11,12 @@ spring:
       schema: forum
 
   jpa:
-    properties:
-      hibernate:
-        format_sql: true
     hibernate:
-      ddl-auto: create
-    show-sql: true
-
+      ddl-auto: create-drop
 
   flyway:
     enabled: false
-    validate-on-migrate: true
+    validate-on-migrate: false
     schemas: forum
 
 server:

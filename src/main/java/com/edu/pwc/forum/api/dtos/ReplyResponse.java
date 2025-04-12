@@ -6,16 +6,13 @@ import java.util.Date;
 
 @Data
 public class ReplyResponse {
+    private String topicTitle;
 
-	private Long id;
+    private Long userId;
 
-	private Long topicId;
+    private String replyBody;
 
-	private Long userId;
+    private Date createdOn;
 
-	private String replyBody;
-
-	private Date createdOn;
-
-	private Date modifiedOn;
+    private Date modifiedOn;
 }

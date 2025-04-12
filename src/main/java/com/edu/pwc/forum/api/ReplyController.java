@@ -6,6 +6,7 @@ import com.edu.pwc.forum.service.services.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,8 +17,8 @@ public class ReplyController {
     private final ReplyService replyService;
 
     @PostMapping
-    public void createReply(@RequestBody ReplyRequest request) {
-        replyService.save(request);
+    public ResponseEntity<ReplyResponse> createReply(@RequestBody ReplyRequest request) {
+        return ResponseEntity.ok().body(replyService.save(request));
     }
 
     @GetMapping("/topic/{topicId}")
