@@ -20,6 +20,9 @@ public class ReplyEntity {
 
 	private Long userId;
 
+	@ManyToOne
+	private TopicEntity topicEntity;
+
 	@Column(nullable = false)
 	private String replyBody;
 
