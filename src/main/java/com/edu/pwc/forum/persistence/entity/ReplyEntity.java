@@ -9,6 +9,7 @@ import java.util.Date;
 
 @Data
 @Entity
+@Table(name = "reply_entity")
 public class ReplyEntity {
 
 	@Id

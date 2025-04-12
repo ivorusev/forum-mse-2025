@@ -9,7 +9,12 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
+
+  flyway:
+    enabled: true
+    validate-on-migrate: true
+    schemas: forum
 
 server:
   port: 9001
