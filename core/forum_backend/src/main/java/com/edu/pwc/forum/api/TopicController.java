@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.pwc.forum.api.dtos.TopicRequest;
+import com.edu.pwc.forum.service.mappers.TopicMapper;
 import com.edu.pwc.forum.service.services.TopicService;
 import lombok.RequiredArgsConstructor;
 
