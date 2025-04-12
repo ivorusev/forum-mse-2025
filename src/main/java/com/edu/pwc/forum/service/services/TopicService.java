@@ -1,30 +1,34 @@
 package com.edu.pwc.forum.service.services;
 
 import com.edu.pwc.forum.api.dtos.TopicRequest;
-import com.edu.pwc.forum.persistence.entity.ReplyEntity;
+import com.edu.pwc.forum.exception.ResourceNotFoundException;
 import com.edu.pwc.forum.persistence.entity.TopicEntity;
 import com.edu.pwc.forum.persistence.repositories.TopicRepository;
-import com.edu.pwc.forum.service.mappers.TopicMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class TopicService {
 
     private final TopicRepository topicRepository;
-    private final TopicMapper topicMapper;
 
     public void save(TopicRequest request) {
-        TopicEntity topicEntity = topicMapper.requestToEntity(request);
-        ReplyEntity reply = new ReplyEntity();
-        reply.setReplyBody("asd");
-        topicEntity.setReplies(List.of(reply));
-        topicRepository.save(topicEntity);
+        TopicEntity entity = new TopicEntity();
+        entity.setTitle(request.getTitle());
+        entity.setCreatedOn(Timestamp.from(Instant.now()));
+        entity.setModifiedOn(Timestamp.from(Instant.now()));
+        topicRepository.save(entity);
+    }
+
+    public TopicEntity getById(Long id) {
+        return topicRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Topic %s was not found"));
+    }
+
+    public TopicEntity findByTitle(String topicTitle) {
+        return topicRepository.findByTitle(topicTitle).orElseThrow(() -> new ResourceNotFoundException("Topic %s was not found"));
     }
 }
