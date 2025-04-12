@@ -24,3 +24,29 @@ mvn clean install
 
 ## Testing credentials:
 Declared in [testing.env](testing.env) file.
+
+
+## Roles
+
+### Administrator
+Activities:
+- All *Moderator* activities +
+- Manage topics
+- Manage users
+- Manage authorization
+
+### Moderator
+Activities:
+- All *Authenticated User* activities +
+- Manage topics content and replies
+- Flag users
+
+### Authenticated User
+- All *Guest* activities +
+- Create topics
+- Reply in a topic
+
+### Guest
+- Browse topics
+- Register
+- Login
