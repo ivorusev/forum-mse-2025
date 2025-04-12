@@ -10,7 +10,6 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "topic_entity")
 public class TopicEntity {
 
 	@Id

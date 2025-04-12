@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.edu.pwc.forum.api.dtos.TopicRequest;
 import com.edu.pwc.forum.persistence.entity.TopicEntity;
 import com.edu.pwc.forum.persistence.repositories.TopicRepository;
+import com.edu.pwc.forum.service.mappers.TopicMapper;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -12,9 +13,10 @@ import lombok.RequiredArgsConstructor;
 public class TopicService {
 
 	private final TopicRepository topicRepository;
+	private final TopicMapper topicMapper;
 
 	public void save(TopicRequest request) {
-		TopicEntity entity = new TopicEntity();
-		topicRepository.save(entity);
+		TopicEntity topicEntity = topicMapper.requestToEntity(request);
+		topicRepository.save(topicEntity);
 	}
 }

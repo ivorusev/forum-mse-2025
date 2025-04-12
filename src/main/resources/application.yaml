@@ -13,8 +13,7 @@ spring:
 
   flyway:
     enabled: true
-    validate-on-migrate: true
-    schemas: forum
+    validate-on-migrate: false
 
 server:
   port: 9001
