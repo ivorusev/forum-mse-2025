@@ -1,16 +1,11 @@
 package com.edu.pwc.forum.api.dtos;
 
 import java.util.Date;
-import lombok.Data;
 
-@Data
-public class TopicResponse {
+public record TopicResponse(
+        String title,
 
-	private Long id;
+        Date createdOn,
 
-	private String title;
-
-	private Date createdOn;
-
-	private Date modifiedOn;
-}
+        Date modifiedOn
+) { }
