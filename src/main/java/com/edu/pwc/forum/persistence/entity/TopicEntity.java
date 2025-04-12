@@ -1,5 +1,6 @@
 package com.edu.pwc.forum.persistence.entity;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import jakarta.persistence.*;
@@ -10,7 +11,6 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "topic_entity")
 public class TopicEntity {
 
 	@Id
@@ -21,8 +21,8 @@ public class TopicEntity {
 	private String title;
 
 	@CreationTimestamp
-	private Date createdOn;
+	private Timestamp createdOn;
 
 	@UpdateTimestamp
-	private Date modifiedOn;
+	private Timestamp modifiedOn;
 }

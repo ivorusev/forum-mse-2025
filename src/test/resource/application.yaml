@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: forum
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:postgresql:16.2:///forumdb
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+  flyway:
+    enabled: true
+    validate-on-migrate: false
+
+server:
+  port: 9001
