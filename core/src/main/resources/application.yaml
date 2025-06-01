@@ -20,7 +20,7 @@ spring:
 
 
   flyway:
-    enabled: false
+    enabled: true
     validate-on-migrate: true
     schemas: forum
 

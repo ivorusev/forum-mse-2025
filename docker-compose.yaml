@@ -30,6 +30,23 @@ services:
     networks:
       - mynetwork
 
+  backend:
+    build:
+      context: "./core"
+    container_name: core
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: "."
+    container_name: hello
+    ports:
+      - "3000:3000"
+
 volumes:
   pgdata:
     driver: local
