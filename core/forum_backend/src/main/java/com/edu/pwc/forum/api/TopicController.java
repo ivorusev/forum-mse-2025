@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/topics")
 @RequiredArgsConstructor
+@CrossOrigin(originPatterns = "http://localhost:3000", allowCredentials = "true")
 public class TopicController {
 
     private final TopicService topicService;
