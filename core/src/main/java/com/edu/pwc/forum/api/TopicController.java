@@ -1,5 +1,6 @@
 package com.edu.pwc.forum.api;
 
+import com.edu.pwc.forum.persistence.entity.TopicEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

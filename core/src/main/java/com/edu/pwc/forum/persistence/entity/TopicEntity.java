@@ -1,15 +1,13 @@
 package com.edu.pwc.forum.persistence.entity;
 
+import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Data;
 
 @Data
@@ -24,8 +22,11 @@ public class TopicEntity {
 	private String title;
 
 	@CreationTimestamp
-	private Date createdOn;
+	private Timestamp createdOn;
 
 	@UpdateTimestamp
-	private Date modifiedOn;
+	private Timestamp modifiedOn;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "topicEntity", cascade = CascadeType.ALL)
+	private List<ReplyEntity> replies;
 }
