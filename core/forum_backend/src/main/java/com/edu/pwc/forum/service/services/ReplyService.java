@@ -22,7 +22,12 @@ public class ReplyService {
 		replyRepository.save(entity);
 	}
 
-	// Mетод за странициране
+	/**
+	 *
+	 * @param topicId
+	 * @param pageable
+	 * @return
+	 */
 	public Page<ReplyResponse> getRepliesByTopicId(Long topicId, Pageable pageable) {
 		return replyRepository.findByTopicId(topicId, pageable)
 				.map(replyMapper::entityToResponse);
