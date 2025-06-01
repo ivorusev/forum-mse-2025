@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ReplyRequest {
-	private Long topicId;
-	private Long userId;
-	private String replyBody;
+    private String topicTitle;
+    private Long userId;
+    private String replyBody;
 }

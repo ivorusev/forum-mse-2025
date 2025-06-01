@@ -1,5 +1,6 @@
 package com.edu.pwc.forum.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,23 +13,23 @@ import java.util.Date;
 @Table(name = "reply_entity")
 public class ReplyEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	private Long topicId;
+    private Long topicId;
 
-	private Long userId;
+    private Long userId;
 
-	@ManyToOne
-	private TopicEntity topicEntity;
+    @Column(nullable = false)
+    private String replyBody;
 
-	@Column(nullable = false)
-	private String replyBody;
+    @CreationTimestamp
+    private Date createdOn;
 
-	@CreationTimestamp
-	private Date createdOn;
+    @UpdateTimestamp
+    private Date modifiedOn;
 
-	@UpdateTimestamp
-	private Date modifiedOn;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private TopicEntity topicEntity;
 }

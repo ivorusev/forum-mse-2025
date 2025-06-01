@@ -3,6 +3,7 @@ package com.edu.pwc.forum.service.services;
 import com.edu.pwc.forum.api.dtos.ReplyRequest;
 import com.edu.pwc.forum.api.dtos.ReplyResponse;
 import com.edu.pwc.forum.persistence.entity.ReplyEntity;
+import com.edu.pwc.forum.persistence.entity.TopicEntity;
 import com.edu.pwc.forum.persistence.repositories.ReplyRepository;
 import com.edu.pwc.forum.service.mappers.ReplyMapper;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +15,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReplyService {
 
-	private final ReplyRepository replyRepository;
-	private final ReplyMapper replyMapper;
+    private final ReplyRepository replyRepository;
+    private final ReplyMapper replyMapper;
 
-	public void save(ReplyRequest request) {
-		ReplyEntity entity = replyMapper.requestToEntity(request);
-		replyRepository.save(entity);
-	}
+    private final TopicService topicService;
+
+    public ReplyResponse save(ReplyRequest request) {
+        TopicEntity topic = topicService.findByTitle(request.getTopicTitle());
+        ReplyEntity entity = replyMapper.requestToEntity(request);
+        entity.setTopicEntity(topic);
+        ReplyEntity replyEntity = replyRepository.save(entity);
+        return replyMapper.entityToResponse(replyEntity);
+    }
 
 	/**
 	 *
