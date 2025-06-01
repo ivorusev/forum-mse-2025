@@ -1,16 +1,19 @@
 package com.edu.pwc.forum.service.services;
 
+import com.edu.pwc.forum.api.dtos.PageResult;
 import com.edu.pwc.forum.api.dtos.TopicRequest;
+import com.edu.pwc.forum.api.dtos.TopicResponse;
+import com.edu.pwc.forum.exception.ResourceNotFoundException;
 import com.edu.pwc.forum.persistence.entity.ReplyEntity;
 import com.edu.pwc.forum.persistence.entity.TopicEntity;
 import com.edu.pwc.forum.persistence.repositories.TopicRepository;
 import com.edu.pwc.forum.service.mappers.TopicMapper;
+import com.edu.pwc.forum.service.mappers.TopicsMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -26,5 +29,25 @@ public class TopicService {
         reply.setReplyBody("asd");
         topicEntity.setReplies(List.of(reply));
         topicRepository.save(topicEntity);
+    }
+
+    public TopicEntity findByTitle(String title) {
+        return topicRepository.findByTitle(title)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Topic %s does not exist", title)));
+    }
+
+    public PageResult<TopicResponse> getAllTopics(int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        Page<TopicEntity> topics = topicRepository.findAll(pageable);
+        List<TopicResponse> topicsDTO = topics.getContent().stream().map(TopicsMapper::mapToDTO).toList();
+
+        PageResult<TopicResponse> pageResult = new PageResult<>();
+        pageResult.setContent(topicsDTO);
+        pageResult.setPage(topics.getNumber());
+        pageResult.setSize(topics.getSize());
+        pageResult.setTotalElements(topics.getTotalElements());
+        pageResult.setTotalPages(topics.getTotalPages());
+        pageResult.setEmpty(topics.isEmpty());
+        return pageResult;
     }
 }
