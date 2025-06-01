@@ -24,9 +24,6 @@ spring:
     validate-on-migrate: true
     schemas: forum
 
-server:
-  port: 9001
-
 client:
   host: ${CLIENT_HOST:3000}
 
