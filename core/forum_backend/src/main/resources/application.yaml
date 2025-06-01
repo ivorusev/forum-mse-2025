@@ -3,9 +3,9 @@ spring:
     name: forum
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres:5432/forumdb
-    username: admin
-    password: admin
+    url: jdbc:postgresql://${DB_HOST}:${DB_HOST_PORT}/${DB_NAME}
+    username: ${DB_USER:admin}
+    password: ${DB_PASSWORD}
 
     hikari:
       schema: forum
@@ -26,5 +26,8 @@ spring:
 
 server:
   port: 9001
+
+client:
+  host: ${CLIENT_HOST:3000}
 
 
