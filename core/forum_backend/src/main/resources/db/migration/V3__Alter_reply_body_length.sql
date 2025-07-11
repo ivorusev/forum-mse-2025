@@ -1,0 +1,1 @@
+ALTER TABLE reply_entity ALTER COLUMN reply_body TYPE text;

@@ -24,6 +24,7 @@ public class ReplyService {
         TopicEntity topic = topicService.findByTitle(request.getTopicTitle());
         ReplyEntity entity = replyMapper.requestToEntity(request);
         entity.setTopicEntity(topic);
+        entity.setTopicId(topic.getId());
         ReplyEntity replyEntity = replyRepository.save(entity);
         return replyMapper.entityToResponse(replyEntity);
     }
