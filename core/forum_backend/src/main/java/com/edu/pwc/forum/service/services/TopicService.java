@@ -4,11 +4,12 @@ import com.edu.pwc.forum.api.dtos.PageResult;
 import com.edu.pwc.forum.api.dtos.TopicRequest;
 import com.edu.pwc.forum.api.dtos.TopicResponse;
 import com.edu.pwc.forum.exception.ResourceNotFoundException;
-import com.edu.pwc.forum.persistence.entity.ReplyEntity;
 import com.edu.pwc.forum.persistence.entity.TopicEntity;
+import com.edu.pwc.forum.persistence.entity.UserEntity;
 import com.edu.pwc.forum.persistence.repositories.TopicRepository;
 import com.edu.pwc.forum.service.mappers.TopicMapper;
 import com.edu.pwc.forum.service.mappers.TopicsMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,13 +23,15 @@ public class TopicService {
 
     private final TopicRepository topicRepository;
     private final TopicMapper topicMapper;
+    private final UserService userService;
 
-    public void save(TopicRequest request) {
+    public TopicResponse createTopic(TopicRequest request) {
         TopicEntity topicEntity = topicMapper.requestToEntity(request);
-        ReplyEntity reply = new ReplyEntity();
-        reply.setReplyBody("asd");
-        topicEntity.setReplies(List.of(reply));
-        topicRepository.save(topicEntity);
+        UserEntity author = userService.findByUsername(request.getUsername());
+        topicEntity.setUser(author);
+        author.getTopics().add(topicEntity);
+        topicEntity = topicRepository.save(topicEntity);
+        return topicMapper.entityToResponse(topicEntity);
     }
 
     public TopicEntity findByTitle(String title) {
@@ -49,5 +52,13 @@ public class TopicService {
         pageResult.setTotalPages(topics.getTotalPages());
         pageResult.setEmpty(topics.isEmpty());
         return pageResult;
+    }
+
+    @Transactional
+    public void deleteByTitle(String title) {
+        topicRepository.findByTitle(title).ifPresent(topic -> {
+            topic.getUser().getTopics().remove(topic);
+            topicRepository.delete(topic);
+        });
     }
 }

@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class ReplyRequest {
     private String topicTitle;
-    private Long userId;
+    private String username;
     private String replyBody;
 }
