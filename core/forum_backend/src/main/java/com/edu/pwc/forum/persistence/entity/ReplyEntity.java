@@ -10,19 +10,17 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "reply_entity")
+@Table(name = "reply_entity", schema = "forum")
 public class ReplyEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Long topicId;
 
     private Long userId;
 
     @Column(nullable = false)
-    private String replyBody;
+    private String content;
 
     @CreationTimestamp
     private Date createdOn;
@@ -30,6 +28,7 @@ public class ReplyEntity {
     @UpdateTimestamp
     private Date modifiedOn;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
+    @JoinColumn(name = "topic_id")
     private TopicEntity topicEntity;
 }

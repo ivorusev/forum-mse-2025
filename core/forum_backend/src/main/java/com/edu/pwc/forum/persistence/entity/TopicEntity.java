@@ -6,11 +6,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
+@Table(name = "topic_entity", schema = "forum")
 public class TopicEntity {
 
     @Id
@@ -27,5 +27,5 @@ public class TopicEntity {
     private Timestamp modifiedOn;
 
     @OneToMany(mappedBy = "topicEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ReplyEntity> replies = new ArrayList<>();
+    private List<ReplyEntity> replies;
 }

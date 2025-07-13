@@ -12,8 +12,9 @@ public interface ReplyMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdOn", ignore = true)
     @Mapping(target = "modifiedOn", ignore = true)
+    @Mapping(target = "topicEntity", ignore = true)
     ReplyEntity requestToEntity(ReplyRequest request);
 
-    @Mapping(source = "topicEntity.title", target = "topicTitle")
+    @Mapping(target = "topicId", source = "topicEntity.id")
     ReplyResponse entityToResponse(ReplyEntity entity);
 }

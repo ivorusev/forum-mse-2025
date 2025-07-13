@@ -21,9 +21,12 @@ public class ReplyService {
     private final TopicService topicService;
 
     public ReplyResponse save(ReplyRequest request) {
-        TopicEntity topic = topicService.findByTitle(request.getTopicTitle());
         ReplyEntity entity = replyMapper.requestToEntity(request);
-        entity.setTopicEntity(topic);
+        
+        // Set the topic entity for proper JPA relationship
+        TopicEntity topicEntity = topicService.findById(request.getTopicId());
+        entity.setTopicEntity(topicEntity);
+        
         ReplyEntity replyEntity = replyRepository.save(entity);
         return replyMapper.entityToResponse(replyEntity);
     }
@@ -35,7 +38,7 @@ public class ReplyService {
 	 * @return
 	 */
 	public Page<ReplyResponse> getRepliesByTopicId(Long topicId, Pageable pageable) {
-		return replyRepository.findByTopicId(topicId, pageable)
+		return replyRepository.findByTopicEntity_Id(topicId, pageable)
 				.map(replyMapper::entityToResponse);
 	}
 }

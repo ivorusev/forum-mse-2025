@@ -35,5 +35,14 @@ public class TopicController {
         return ResponseEntity.ok(topicService.getAllTopics(page, size));
     }
 
-
+    @Operation(summary = "Get topic by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Topic was successfully retrieved"),
+            @ApiResponse(responseCode = "404", description = "Topic not found")
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<TopicResponse> getTopicById(@PathVariable Long id) {
+        TopicResponse topic = topicService.getTopicById(id);
+        return ResponseEntity.ok(topic);
+    }
 }

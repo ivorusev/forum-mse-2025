@@ -4,7 +4,6 @@ import com.edu.pwc.forum.api.dtos.PageResult;
 import com.edu.pwc.forum.api.dtos.TopicRequest;
 import com.edu.pwc.forum.api.dtos.TopicResponse;
 import com.edu.pwc.forum.exception.ResourceNotFoundException;
-import com.edu.pwc.forum.persistence.entity.ReplyEntity;
 import com.edu.pwc.forum.persistence.entity.TopicEntity;
 import com.edu.pwc.forum.persistence.repositories.TopicRepository;
 import com.edu.pwc.forum.service.mappers.TopicMapper;
@@ -25,9 +24,6 @@ public class TopicService {
 
     public void save(TopicRequest request) {
         TopicEntity topicEntity = topicMapper.requestToEntity(request);
-        ReplyEntity reply = new ReplyEntity();
-        reply.setReplyBody("asd");
-        topicEntity.setReplies(List.of(reply));
         topicRepository.save(topicEntity);
     }
 
@@ -49,5 +45,18 @@ public class TopicService {
         pageResult.setTotalPages(topics.getTotalPages());
         pageResult.setEmpty(topics.isEmpty());
         return pageResult;
+    }
+
+    public TopicEntity findById(Long id) {
+        return topicRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Topic with id %d does not exist", id)));
+    }
+
+    public TopicResponse getTopicById(Long id) {
+        TopicEntity entity = topicRepository.findById(id).orElse(null);
+        if (entity == null) {
+            return null;
+        }
+        return TopicsMapper.mapToDTO(entity);
     }
 }

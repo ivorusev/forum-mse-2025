@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReplyRepository extends JpaRepository<ReplyEntity, Long> {
-    Page<ReplyEntity> findByTopicId(Long topicId, Pageable pageable);
+    Page<ReplyEntity> findByTopicEntity_Id(Long topicId, Pageable pageable);
 }

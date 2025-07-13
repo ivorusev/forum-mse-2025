@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/replies")
 @RequiredArgsConstructor
+@CrossOrigin(originPatterns = "http://localhost:3000", allowCredentials = "true")
 public class ReplyController {
 
     private final ReplyService replyService;
