@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import {Topics} from './Topics.tsx'
+import Topics from './Topics';
 
 type Topic = {
     title: string;

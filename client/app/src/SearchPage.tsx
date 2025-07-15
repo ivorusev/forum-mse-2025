@@ -16,7 +16,7 @@ interface SearchSuggestion {
   isPopular?: boolean;
 }
 
-const Home: React.FC = () => {
+const SearchPage: React.FC = () => {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
@@ -338,4 +338,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default SearchPage;

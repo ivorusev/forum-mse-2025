@@ -21,7 +21,7 @@ public class ReplyEntity {
 
     private Long userId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "text")
     private String replyBody;
 
     @CreationTimestamp
