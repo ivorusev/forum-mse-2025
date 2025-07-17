@@ -6,9 +6,10 @@ import java.util.Date;
 
 @Data
 public class ReplyResponse {
+    private Long id;
     private String topicTitle;
 
-    private Long userId;
+    private String authorUsername;
 
     private String replyBody;
 

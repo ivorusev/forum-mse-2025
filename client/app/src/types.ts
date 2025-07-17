@@ -14,6 +14,29 @@ export type Reply = {
     createdOn: string;
 };
 
+export type UserResponse = {
+    id: number;
+    username: string;
+    email: string;
+    role: string;
+};
+
+export type TopicResponse ={
+    id: number;
+    title: string;
+    content: string;
+    authorUsername: string;
+    createdOn: string;
+};
+
+export type ReplyResponse ={
+    id: number;
+    authorUsername: string;
+    replyBody: string;
+    createdOn: string;
+    topicTitle: string;
+};
+
 export type TopicCardProps = {
     topic: Topic;
     replies: Reply[];

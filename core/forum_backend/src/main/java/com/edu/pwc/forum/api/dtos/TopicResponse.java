@@ -6,5 +6,7 @@ public record TopicResponse(
         Long id,
         String title,
         Date createdOn,
-        Date modifiedOn
-) { }
+        Date modifiedOn,
+        String authorUsername
+) {
+}

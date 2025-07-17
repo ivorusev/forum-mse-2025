@@ -127,6 +127,9 @@ export default function Topics() {
       <button className="search-btn" onClick={() => navigate("/search")}>
         Търсене
       </button>
+      <button className="admin-panel-btn" onClick={() => navigate("/admin")}>
+        Административен панел
+      </button>
       {topics.length > 0 && (
         <Pagination
           page={page}
