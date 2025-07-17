@@ -26,7 +26,7 @@ public class ReplyEntity {
     @ManyToOne
     private UserEntity user;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "text")
     private String replyBody;
 
     @CreationTimestamp

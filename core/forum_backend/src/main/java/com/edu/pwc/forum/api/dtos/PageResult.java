@@ -1,6 +1,5 @@
 package com.edu.pwc.forum.api.dtos;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

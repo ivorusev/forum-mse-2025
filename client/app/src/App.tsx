@@ -1,25 +1,22 @@
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import AddTopic from "./AddTopic";
+import Topics  from "./Topics";
+import SearchPage  from "./SearchPage";
 import './App.css'
 import AdminPanel from './components/AdminPanel.tsx';
-import {BrowserRouter as Router, Link, Route, Routes} from 'react-router-dom';
-
-
-function Navigation() {
-    return (
-        <nav style={{padding: '10px', background: '#eee'}}>
-            <Link to="/admin">Административен панел</Link>
-        </nav>
-    );
-}
 
 function App() {
-    return (
-        <Router>
-            <Navigation/>
-            <Routes>
-                <Route path="/admin" element={<AdminPanel/>}/>
-            </Routes>
-        </Router>
-    )
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Topics />} />
+        <Route path="/add-topic" element={<AddTopic />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/admin" element={<AdminPanel/>}/>
+      </Routes>
+    </>
+  );
 }
 
 export default App
