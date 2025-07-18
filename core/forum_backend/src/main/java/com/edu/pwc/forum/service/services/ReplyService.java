@@ -21,6 +21,7 @@ public class ReplyService {
     private final ReplyMapper replyMapper;
     private final UserService userService;
     private final TopicService topicService;
+    private final VoteService voteService;
 
     public ReplyResponse createReply(ReplyRequest request) {
         TopicEntity topic = topicService.findByTitle(request.getTopicTitle());
@@ -30,7 +31,15 @@ public class ReplyService {
         reply.setTopic(topic);
         reply.setUser(author);
         ReplyEntity replyEntity = replyRepository.save(reply);
-        return replyMapper.entityToResponse(replyEntity);
+        return mapToResponseWithVotes(replyEntity);
+    }
+
+    private ReplyResponse mapToResponseWithVotes(ReplyEntity entity) {
+        ReplyResponse response = replyMapper.entityToResponse(entity);
+        response.setUpvotes(voteService.getReplyUpvotes(entity.getId()));
+        response.setDownvotes(voteService.getReplyDownvotes(entity.getId()));
+        response.setVoteScore(voteService.getReplyVoteScore(entity.getId()));
+        return response;
     }
 
     /**
@@ -40,7 +49,7 @@ public class ReplyService {
      */
     public Page<ReplyResponse> getRepliesByTopicId(Long topicId, Pageable pageable) {
         return replyRepository.findByTopicId(topicId, pageable)
-                .map(replyMapper::entityToResponse);
+                .map(this::mapToResponseWithVotes);
     }
 
     @Transactional

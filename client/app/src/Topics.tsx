@@ -6,6 +6,12 @@ import Pagination from "./Pagination";
 import TopicCard from "./TopicCard";
 import type { Topic, Reply } from "./types.ts";
 
+// TODO: Remove this hardcoded user when real authentication is implemented
+const HARDCODED_USER = {
+  username: 'testuser',
+  isAuthenticated: true // Set to false to test disabled state
+};
+
 export default function Topics() {
   const navigate = useNavigate();
   const [topics, setTopics] = useState<Topic[]>([]);
@@ -84,6 +90,12 @@ export default function Topics() {
   }, [replies, accordionOpen, replyingTo, success]);
 
   const handleSendReply = async (topic: Topic) => {
+    // Check if user is authenticated before allowing reply
+    if (!HARDCODED_USER.isAuthenticated) {
+      setError("Трябва да влезете в профила си, за да изпратите отговор");
+      return;
+    }
+
     setSending(true);
     setError("");
     setSuccess(false);

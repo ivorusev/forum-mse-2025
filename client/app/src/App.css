@@ -100,6 +100,27 @@ html {
     padding: 20px 20px 40px 20px;
 }
 
+/* Vote button layout styles */
+.topic-content-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.topic-main-content {
+    flex: 1;
+}
+
+.reply-content-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.reply-main-content {
+    flex: 1;
+}
+
 .add-topic-btn {
     margin-bottom: 24px;
     padding: 10px 20px;
@@ -403,4 +424,50 @@ html {
 
 .ql-align-justify {
     text-align: justify;
+}
+
+/* Authentication-related styles - TODO: Remove when real authentication is implemented */
+.auth-warning {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    color: #856404;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.auth-warning p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.auth-required-note {
+    color: #6c757d;
+    font-size: 12px;
+    font-style: italic;
+    margin-left: 8px;
+}
+
+.current-user-info {
+    margin-top: 12px;
+    padding: 8px;
+    background: #e7f3ff;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.current-user-info small {
+    color: #0066cc;
+    font-weight: 500;
+}
+
+/* Disabled button styling for unauthenticated users */
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+}
+
+button:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
 }

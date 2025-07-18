@@ -16,4 +16,10 @@ public class ReplyResponse {
     private Date createdOn;
 
     private Date modifiedOn;
+    
+    private Long upvotes;
+    
+    private Long downvotes;
+    
+    private Long voteScore;
 }

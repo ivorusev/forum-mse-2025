@@ -6,12 +6,18 @@ export type Topic = {
     content?: string;
     createdOn: Date;
     modifiedOn: Date;
+    upvotes?: number;
+    downvotes?: number;
+    voteScore?: number;
 };
 
 export type Reply = {
     id: number;
     replyBody: string;
     createdOn: string;
+    upvotes?: number;
+    downvotes?: number;
+    voteScore?: number;
 };
 
 export type UserResponse = {
@@ -27,6 +33,9 @@ export type TopicResponse ={
     content: string;
     authorUsername: string;
     createdOn: string;
+    upvotes: number;
+    downvotes: number;
+    voteScore: number;
 };
 
 export type ReplyResponse ={
@@ -35,6 +44,9 @@ export type ReplyResponse ={
     replyBody: string;
     createdOn: string;
     topicTitle: string;
+    upvotes: number;
+    downvotes: number;
+    voteScore: number;
 };
 
 export type TopicCardProps = {

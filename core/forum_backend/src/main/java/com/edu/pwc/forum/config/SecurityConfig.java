@@ -30,7 +30,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/topics/**", "/users/**", "/replies/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/topics/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/topics").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/topics/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/users/**", "/replies/**", "/votes/**").permitAll()
                                 .anyRequest().authenticated()
                 );
         return http.build();

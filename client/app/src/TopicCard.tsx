@@ -1,6 +1,13 @@
 import DOMPurify from "dompurify";
 import MarkdownEditor from "./MardownEditor";
+import VoteButtons from "./components/VoteButtons";
 import type { TopicCardProps } from "./types.ts";
+
+// TODO: Remove this hardcoded user when real authentication is implemented
+const HARDCODED_USER = {
+  username: 'testuser',
+  isAuthenticated: true // Set to false to test disabled state
+};
 
 export default function TopicCard({
   topic,
@@ -35,35 +42,57 @@ export default function TopicCard({
   }
   return (
     <div className="topic-card">
-      <h2 className="topic-title">{topic.title}</h2>
-      {topic.content && <div className="topic-content">{topic.content}</div>}
-      <div className="topic-date">
-        Създадена на: {dateToString(topic.createdOn)}
-      </div>
-      <div className="topic-actions">
-        <button
-          className="reply-btn"
-          onMouseOver={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.transform =
-              "scale(1.07)";
-            (e.currentTarget as HTMLButtonElement).style.boxShadow =
-              "0 6px 24px #43e97b66, 0 2px 8px #0002";
-          }}
-          onMouseOut={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.transform = "none";
-            (e.currentTarget as HTMLButtonElement).style.boxShadow =
-              "0 4px 16px #43e97b44, 0 1.5px 4px #0001";
-          }}
-          onClick={() => {
-            setReplyingTo(topic.id);
-            setReplyContent("");
-            setSuccess(false);
-            setError("");
-            setTimeout(() => replyInputRef?.current?.focus(), 100);
-          }}
-        >
-          Отговор
-        </button>
+      <div className="topic-content-wrapper">
+        <VoteButtons
+          itemId={topic.id}
+          itemType="topic"
+          voteScore={topic.voteScore || 0}
+        />
+        <div className="topic-main-content">
+          <h2 className="topic-title">{topic.title}</h2>
+          {topic.content && <div className="topic-content">{topic.content}</div>}
+          <div className="topic-date">
+            Създадена на: {dateToString(topic.createdOn)}
+          </div>
+          <div className="topic-actions">
+            <button
+              className="reply-btn"
+              disabled={!HARDCODED_USER.isAuthenticated}
+              title={HARDCODED_USER.isAuthenticated ? "Отговор" : "Влизането е необходимо за отговор"}
+              onMouseOver={(e) => {
+                if (HARDCODED_USER.isAuthenticated) {
+                  (e.currentTarget as HTMLButtonElement).style.transform =
+                    "scale(1.07)";
+                  (e.currentTarget as HTMLButtonElement).style.boxShadow =
+                    "0 6px 24px #43e97b66, 0 2px 8px #0002";
+                }
+              }}
+              onMouseOut={(e) => {
+                if (HARDCODED_USER.isAuthenticated) {
+                  (e.currentTarget as HTMLButtonElement).style.transform = "none";
+                  (e.currentTarget as HTMLButtonElement).style.boxShadow =
+                    "0 4px 16px #43e97b44, 0 1.5px 4px #0001";
+                }
+              }}
+              onClick={() => {
+                if (HARDCODED_USER.isAuthenticated) {
+                  setReplyingTo(topic.id);
+                  setReplyContent("");
+                  setSuccess(false);
+                  setError("");
+                  setTimeout(() => replyInputRef?.current?.focus(), 100);
+                }
+              }}
+            >
+              Отговор
+            </button>
+            {!HARDCODED_USER.isAuthenticated && (
+              <small className="auth-required-note">
+                Влизането е необходимо за отговор
+              </small>
+            )}
+          </div>
+        </div>
       </div>
       {replyingTo === topic.id && (
         <form
@@ -123,14 +152,23 @@ export default function TopicCard({
             <div className="replies-list">
               {replies.map((r, idx) => (
                 <div key={r.id ?? idx} className="reply-card">
-                  <div
-                    className="reply-body"
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(r.replyBody),
-                    }}
-                  />
-                  <div className="reply-date">
-                    Създаден на: {new Date(r.createdOn).toLocaleString("bg-BG")}
+                  <div className="reply-content-wrapper">
+                    <VoteButtons
+                      itemId={r.id}
+                      itemType="reply"
+                      voteScore={r.voteScore || 0}
+                    />
+                    <div className="reply-main-content">
+                      <div
+                        className="reply-body"
+                        dangerouslySetInnerHTML={{
+                          __html: DOMPurify.sanitize(r.replyBody),
+                        }}
+                      />
+                      <div className="reply-date">
+                        Създаден на: {new Date(r.createdOn).toLocaleString("bg-BG")}
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}

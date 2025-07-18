@@ -7,6 +7,9 @@ public record TopicResponse(
         String title,
         Date createdOn,
         Date modifiedOn,
-        String authorUsername
+        String authorUsername,
+        Long upvotes,
+        Long downvotes,
+        Long voteScore
 ) {
 }

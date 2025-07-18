@@ -24,6 +24,7 @@ public class TopicService {
     private final TopicRepository topicRepository;
     private final TopicMapper topicMapper;
     private final UserService userService;
+    private final VoteService voteService;
 
     public TopicResponse createTopic(TopicRequest request) {
         TopicEntity topicEntity = topicMapper.requestToEntity(request);
@@ -31,7 +32,7 @@ public class TopicService {
         topicEntity.setUser(author);
         author.getTopics().add(topicEntity);
         topicEntity = topicRepository.save(topicEntity);
-        return topicMapper.entityToResponse(topicEntity);
+        return TopicsMapper.mapToDTOWithVotes(topicEntity, voteService);
     }
 
     public TopicEntity findByTitle(String title) {
@@ -42,7 +43,9 @@ public class TopicService {
     public PageResult<TopicResponse> getAllTopics(int page, int size) {
         PageRequest pageable = PageRequest.of(page, size);
         Page<TopicEntity> topics = topicRepository.findAll(pageable);
-        List<TopicResponse> topicsDTO = topics.getContent().stream().map(TopicsMapper::mapToDTO).toList();
+        List<TopicResponse> topicsDTO = topics.getContent().stream()
+                .map(topic -> TopicsMapper.mapToDTOWithVotes(topic, voteService))
+                .toList();
 
         PageResult<TopicResponse> pageResult = new PageResult<>();
         pageResult.setContent(topicsDTO);
