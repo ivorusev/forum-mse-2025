@@ -8,10 +8,12 @@ import "highlight.js/styles/github-dark.css";
 
 export default function MarkdownEditor({
   value,
-  onEditorChange,
+  onChange,
+  inputRef,
 }: {
   value: string;
-  onEditorChange: (value: string) => void;
+  onChange: (value: string) => void;
+  inputRef?: React.RefObject<HTMLElement | null>;
 }) {
   const editorRef = useRef<HTMLDivElement>(null);
   const quillRef = useRef<Quill | null>(null);
@@ -36,6 +38,10 @@ export default function MarkdownEditor({
 
       quillRef.current = quill;
 
+      if (inputRef) {
+        (inputRef as React.MutableRefObject<HTMLElement | null>).current = quill.root;
+      }
+
       new QuillMarkdown(quill, {});
 
       if (value) {
@@ -44,10 +50,10 @@ export default function MarkdownEditor({
 
       quill.on("text-change", () => {
         const content = quill.root.innerHTML;
-        onEditorChange(content);
+        onChange(content);
       });
     }
-  }, [onEditorChange, value]);
+  }, [onChange, value, inputRef]);
 
   useEffect(() => {
     if (quillRef.current) {

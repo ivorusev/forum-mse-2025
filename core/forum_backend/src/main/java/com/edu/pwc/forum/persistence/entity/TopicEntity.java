@@ -37,6 +37,12 @@ public class TopicEntity {
     private Timestamp modifiedOn;
 
     @ManyToOne
+    private CategoryEntity category;
+
+    @Column(name = "body", nullable = false)
+    private String body;
+
+    @ManyToOne
     private UserEntity user;
 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)

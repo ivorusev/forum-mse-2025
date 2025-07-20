@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
+import type { Category } from "./types";
 
-// TODO: Remove this hardcoded user when real authentication is implemented
 const HARDCODED_USER = {
   username: 'testuser',
   isAuthenticated: true // Set to false to test disabled state
@@ -13,7 +13,21 @@ export default function AddTopic() {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/categories")
+        .then(res => res.json())
+        .then(data => {
+            setCategories(data);
+            if (data.length > 0) {
+                setSelectedCategory(data[0].id);
+            }
+        })
+        .catch(err => console.error("Failed to fetch categories", err));
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,14 +41,12 @@ export default function AddTopic() {
     setLoading(true);
     setError("");
     try {
-      // TODO: Replace with real authentication system
-      // For now, using hardcoded user for testing purposes
       const username = HARDCODED_USER.username;
       
       const res = await fetch("http://localhost:8080/topics", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, username }),
+        body: JSON.stringify({ title, username, categoryId: selectedCategory, body: content }),
       });
       if (!res.ok) throw new Error("Грешка при добавяне на тема");
       navigate("/");
@@ -51,7 +63,7 @@ export default function AddTopic() {
       {!HARDCODED_USER.isAuthenticated && (
         <div className="auth-warning">
           <p>Трябва да влезете в профила си, за да добавите нова тема.</p>
-          {/* TODO: Add login component here when authentication is implemented */}
+          {/* login logic */}
         </div>
       )}
       <form onSubmit={handleSubmit} className="add-topic-form">
@@ -64,6 +76,17 @@ export default function AddTopic() {
           className="add-topic-input"
           disabled={!HARDCODED_USER.isAuthenticated}
         />
+        <select
+            value={selectedCategory || ''}
+            onChange={(e) => setSelectedCategory(Number(e.target.value))}
+            required
+            className="add-topic-select"
+            disabled={!HARDCODED_USER.isAuthenticated}
+        >
+            {categories.map(category => (
+                <option key={category.id} value={category.id}>{category.name}</option>
+            ))}
+        </select>
         <textarea
           placeholder="Съдържание"
           value={content}

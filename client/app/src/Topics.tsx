@@ -4,7 +4,7 @@ import hljs from "highlight.js";
 import "highlight.js/styles/github-dark.css";
 import Pagination from "./Pagination";
 import TopicCard from "./TopicCard";
-import type { Topic, Reply } from "./types.ts";
+import type { Topic, Reply, Category } from "./types.ts";
 
 // TODO: Remove this hardcoded user when real authentication is implemented
 const HARDCODED_USER = {
@@ -24,13 +24,26 @@ export default function Topics() {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize] = useState(5);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [accordionOpen, setAccordionOpen] = useState<Record<number, boolean>>(
     {}
   );
   const replyInputRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/topics?page=${page}&size=${pageSize}`)
+    fetch(`http://localhost:8080/api/categories`)
+        .then((response) => response.json())
+        .then((data) => setCategories(data))
+        .catch((error) => console.error("Error fetching categories:", error));
+  }, []);
+
+  useEffect(() => {
+    let url = `http://localhost:8080/topics?page=${page}&size=${pageSize}`;
+    if (selectedCategory) {
+      url += `&categoryId=${selectedCategory}`;
+    }
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         const topicsData = data.content.map((t: Topic) => ({
@@ -59,7 +72,7 @@ export default function Topics() {
         });
       })
       .catch((error) => console.error("Error fetching topics:", error));
-  }, [page, pageSize]);
+  }, [page, pageSize, selectedCategory]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -99,91 +112,85 @@ export default function Topics() {
     setSending(true);
     setError("");
     setSuccess(false);
+
     try {
-      const res = await fetch("http://localhost:8080/replies", {
+      const response = await fetch("http://localhost:8080/replies", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
-          topicTitle: topic.title,
-          userId: null,
           replyBody: replyContent,
+          topicTitle: topic.title,
+          username: HARDCODED_USER.username,
         }),
       });
-      if (!res.ok) throw new Error("Грешка при изпращане на отговор");
-      fetch(`http://localhost:8080/replies/topic/${topic.id}`)
-        .then((res) => {
-          if (!res.ok) throw new Error("Грешка при зареждане на отговорите");
-          return res.json();
-        })
-        .then((replyData) => {
-          setReplies((prev) => ({
-            ...prev,
-            [topic.id]: replyData.content || [],
-          }));
-        });
-      setSuccess(true);
+
+      if (!response.ok) {
+        throw new Error("Грешка при изпращане на отговор");
+      }
+
+      const newReply = await response.json();
+      setReplies((prev) => ({
+        ...prev,
+        [topic.id]: [...(prev[topic.id] || []), newReply],
+      }));
       setReplyContent("");
-      setTimeout(() => setReplyingTo(null), 1200);
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Грешка");
+      setReplyingTo(null);
+      setSuccess(true);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Възникна неочаквана грешка"
+      );
     } finally {
       setSending(false);
     }
   };
 
   return (
-    <div className="topics-container">
-      <button className="add-topic-btn" onClick={() => navigate("/add-topic")}>
-        Добави нова тема
-      </button>
-      <button className="search-btn" onClick={() => navigate("/search")}>
-        Търсене
-      </button>
-      <button className="admin-panel-btn" onClick={() => navigate("/admin")}>
-        Административен панел
-      </button>
-      {topics.length > 0 && (
-        <Pagination
-          page={page}
-          totalPages={totalPages}
-          setPage={setPage}
-          position="top"
-        />
-      )}
-      <div>
-        {topics.length === 0 ? (
-          <div className="no-topics">Няма публикувани теми</div>
-        ) : (
-          topics.map((topic) => (
-            <TopicCard
-              key={topic.id}
-              topic={topic}
-              replies={replies[topic.id] || []}
-              replyingTo={replyingTo}
-              setReplyingTo={setReplyingTo}
-              replyContent={replyContent}
-              setReplyContent={setReplyContent}
-              sending={sending}
-              success={success}
-              error={error}
-              handleSendReply={handleSendReply}
-              setSuccess={setSuccess}
-              setError={setError}
-              accordionOpen={accordionOpen}
-              setAccordionOpen={setAccordionOpen}
-              replyInputRef={replyInputRef}
-            />
-          ))
-        )}
+    <div className="container">
+      <div className="navigation">
+        <button onClick={() => navigate("/add-topic")}>Добави тема</button>
+        <div className="filters">
+          <select onChange={(e) => setSelectedCategory(Number(e.target.value))} value={selectedCategory || ''}>
+            <option value="">Всички категории</option>
+            {categories.map(category => (
+              <option key={category.id} value={category.id}>{category.name}</option>
+            ))}
+          </select>
+        </div>
       </div>
-      {topics.length > 0 && (
-        <Pagination
-          page={page}
-          totalPages={totalPages}
-          setPage={setPage}
-          position="bottom"
-        />
-      )}
+      <Pagination page={page} totalPages={totalPages} setPage={setPage} />
+      <div className="topics-list">
+        {topics.map((topic) => (
+          <TopicCard
+            key={topic.id}
+            topic={topic}
+            replies={replies[topic.id] || []}
+            replyingTo={replyingTo}
+            setReplyingTo={setReplyingTo}
+            replyContent={replyContent}
+            setReplyContent={setReplyContent}
+            sending={sending}
+            success={success}
+            error={error}
+            handleSendReply={handleSendReply}
+            setSuccess={setSuccess}
+            setError={setError}
+            accordionOpen={accordionOpen}
+            setAccordionOpen={setAccordionOpen}
+            replyInputRef={replyInputRef}
+          />
+        ))}
+      </div>
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        setPage={setPage}
+        position="bottom"
+      />
     </div>
   );
 }
