@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './VoteButtons.css';
 
-// TODO: Remove this hardcoded user when real authentication is implemented
+
 const HARDCODED_USER = {
   username: 'testuser',
   isAuthenticated: true // Set to false to test disabled state
@@ -58,8 +58,6 @@ const VoteButtons: React.FC<VoteButtonsProps> = ({
 
     setIsLoading(true);
     try {
-      // TODO: Replace with real authentication system
-      // For now, using hardcoded user for testing purposes
       const username = HARDCODED_USER.username;
       
       const voteRequest = {
