@@ -1,1 +1,1 @@
-ALTER TABLE public.reply_entity ALTER COLUMN reply_body TYPE text;
+ALTER TABLE forumdb.replies ALTER COLUMN reply_body TYPE text;

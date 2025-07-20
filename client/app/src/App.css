@@ -1,12 +1,67 @@
+/* App.css */
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --background-color: #f8f9fa;
+  --text-color: #212529;
+  --card-bg: #ffffff;
+  --border-color: #dee2e6;
+  --shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
 body {
-    font-family: "Inter", "Roboto", "Segoe UI", "Arial", "Helvetica Neue",
-    sans-serif;
-    font-size: 17px;
-    color: #222;
-    background: #f7f8fa;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.navigation button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.navigation button:hover {
+  background-color: #0056b3;
+}
+
+.filters select {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  background-color: white;
+  font-size: 16px;
+}
+
+.topics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 html {
@@ -426,7 +481,6 @@ html {
     text-align: justify;
 }
 
-/* Authentication-related styles - TODO: Remove when real authentication is implemented */
 .auth-warning {
     background: #fff3cd;
     border: 1px solid #ffeaa7;

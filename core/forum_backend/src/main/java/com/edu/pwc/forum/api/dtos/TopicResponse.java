@@ -8,6 +8,8 @@ public record TopicResponse(
         Date createdOn,
         Date modifiedOn,
         String authorUsername,
+        CategoryResponse category,
+        String body,
         Long upvotes,
         Long downvotes,
         Long voteScore

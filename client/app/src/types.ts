@@ -6,9 +6,15 @@ export type Topic = {
     content?: string;
     createdOn: Date;
     modifiedOn: Date;
+    category?: Category;
     upvotes?: number;
     downvotes?: number;
     voteScore?: number;
+};
+
+export type Category = {
+    id: number;
+    name: string;
 };
 
 export type Reply = {
@@ -33,6 +39,7 @@ export type TopicResponse ={
     content: string;
     authorUsername: string;
     createdOn: string;
+    category: Category;
     upvotes: number;
     downvotes: number;
     voteScore: number;

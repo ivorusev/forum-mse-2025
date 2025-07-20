@@ -11,4 +11,6 @@ public class TopicRequest {
     String title;
     @NotBlank(message = "Username must not be null nor empty")
     String username;
+    String body;
+    Long categoryId;
 }

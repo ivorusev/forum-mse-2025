@@ -31,7 +31,7 @@ class ForumApplicationTests {
     @Test
     void contextLoads() throws Exception {
         mockMvc.perform(post("/topics")
-                .content(asJsonString(new TopicRequest("test_topic5")))
+                .content(asJsonString(new TopicRequest("test_topic5", "testuser", "testbody", 1L)))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
     }

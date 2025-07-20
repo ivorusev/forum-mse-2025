@@ -53,8 +53,11 @@ public class TopicController {
             @RequestParam(required = false, defaultValue = "0") Integer page,
 
             @Parameter(description = "Number of topics per page", example = "10")
-            @RequestParam(required = false, defaultValue = "10") Integer size) {
-        return ResponseEntity.ok(topicService.getAllTopics(page, size));
+            @RequestParam(required = false, defaultValue = "10") Integer size,
+
+            @Parameter(description = "Category ID to filter by", example = "1")
+            @RequestParam(required = false) Long categoryId) {
+        return ResponseEntity.ok(topicService.getAllTopics(page, size, categoryId));
     }
 
     @Operation(summary = "Delete topic by title")
