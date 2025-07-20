@@ -6,6 +6,7 @@ import Pagination from "./Pagination";
 import TopicCard from "./TopicCard";
 import type { Topic, Reply, Category } from "./types.ts";
 
+// TODO: Remove this hardcoded user when real authentication is implemented
 const HARDCODED_USER = {
   username: 'testuser',
   isAuthenticated: true // Set to false to test disabled state
